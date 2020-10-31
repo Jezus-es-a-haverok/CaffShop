@@ -1,7 +1,11 @@
+#ifndef FILE_CAFF_HPP
+#define FILE_CAFF_HPP
+
 #include <string>
 #include <vector>
 #include <map>
-#include "base.hpp"
+
+#include <base.hpp>
 
 /* Példa csak */
 
@@ -19,3 +23,5 @@ class CAFF {
   /* Creator */
   std::string Creator;
 };
+
+#endif /* FILE_CAFF_HPP */

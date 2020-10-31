@@ -1,4 +1,4 @@
-#include "parser.hpp"
+#include <parser.hpp>
 
 int main() {
   print("Hello, makefile!\n");

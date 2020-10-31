@@ -1,3 +1,5 @@
+#ifndef FILE_BASE_HPP
+#define FILE_BASE_HPP
 
 struct Size {
   int X;
@@ -10,3 +12,5 @@ struct Pixel {
   int B;
   int A;
 };
+
+#endif /* FILE_BASE_HPP */

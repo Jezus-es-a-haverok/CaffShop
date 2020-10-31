@@ -1,6 +1,10 @@
+#ifndef FILE_CIFF_HPP
+#define FILE_CIFF_HPP
+
 #include <string>
 #include <vector>
-#include "base.hpp"
+
+#include <base.hpp>
 
 /* Példa csak */
 
@@ -15,3 +19,5 @@ class CIFF {
   /* Creator */
   std::string Creator;
 };
+
+#endif /* FILE_CIFF_HPP */
