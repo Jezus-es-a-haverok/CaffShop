@@ -5,12 +5,15 @@ CC = g++
 
 all: caffparser test
 
-caffparser: parser.o
+caffparser: caff.o parser.o
 	mkdir -p ../lib ;\
-	$(CC) $(FLAGS) $(CLIBFLAG) parser.o -o ../lib/libcaffparser.so
+	$(CC) $(FLAGS) $(CLIBFLAG) parser.o caff.o -o ../lib/libcaffparser.so
 
 parser.o: src/parser.cpp
 	$(CC) $(FLAGS) $(CLIBFLAG) -c src/parser.cpp -o parser.o
+
+caff.o: src/caff.cpp
+	$(CC) $(FLAGS) $(CLIBFLAG) -c src/caff.cpp -o caff.o
 
 test: caffparser buildtest
 	test/test.out
