@@ -4,13 +4,26 @@
 #include <caff.hpp>
 
 
-std::vector<std::byte> parse(std::vector<std::byte> caffByte) {
+std::vector<std::byte> parse(std::vector<std::byte> caffByte, bool justCheck) {
+
   CAFF* caff = new CAFF();
-  //Parse
-  std::vector<std::byte>* bytestream = new std::vector<std::byte>();
-  //convert caff to byte
+  std::vector<std::byte> bytestream;
+
+  try {
+    caff->loadFromByte(caffByte);
+    ERROR_CODE retCode = caff->getCode();
+    bytestream.push_back(std::byte(retCode));
+
+    if(!justCheck && retCode == OK) {
+      caff->saveToByte(bytestream);
+    }
+
+  } catch (...) {
+    bytestream.insert(bytestream.begin(), std::byte(ERROR));
+  }
+
   delete caff;
-  return *bytestream;
+  return bytestream;
 }
 
 void print(std::string msg) {

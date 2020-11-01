@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-std::vector<std::byte> parse(std::vector<std::byte> caffByte);
+std::vector<std::byte> parse(std::vector<std::byte> caffByte, bool justCheck);
 
 void print(std::string);
 
