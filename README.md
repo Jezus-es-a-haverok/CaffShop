@@ -1,5 +1,10 @@
 # CaffShop
 
+## Repository letöltése:
+
+    git clone https://github.com/Jezus-es-a-haverok/CaffShop.git
+    git submodule update --init
+
 ## Parser fordítása
 
 Lehet a project gyökérkönyvtárában és a caffparser/ könyvtársban is:
