@@ -4,8 +4,11 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <pybind11/pytypes.h>
 
 #include <base.hpp>
+
+namespace py = pybind11;
 
 
 class CAFF {
@@ -13,9 +16,10 @@ class CAFF {
 public:
 
   CAFF();
-  void loadFromByte(std::vector<std::byte>& caffByte);
+  void loadFromByte(char* caffByte, unsigned long length);
   void saveToByte(std::vector<std::byte>& bytestream);
   ERROR_CODE getCode();
+  std::string getCreator();
 
 private:
 
@@ -24,7 +28,13 @@ private:
   std::vector<Pixel> thumbnail;   /* The generated thumbnail */
   std::string Creator;            /* Creator */
 
+
+  long long headerLength;
+  long long caffHeaderLength;
+  long long animNum;
   ERROR_CODE code;
+
+  void parseHeader(int& index, char* caffByte, int maxLength);
 
 };
 

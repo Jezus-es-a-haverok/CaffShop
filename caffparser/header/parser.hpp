@@ -3,8 +3,10 @@
 
 #include <vector>
 #include <string>
+#include <pybind11/stl.h>
 
-std::vector<std::byte> parse(std::vector<std::byte> caffByte, bool justCheck);
+
+char* parse(char* caffByte, unsigned long length, bool justCheck);
 
 void print(std::string);
 
