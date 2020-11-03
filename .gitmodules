@@ -1,0 +1,3 @@
+[submodule "import/pybind11"]
+	path = import/pybind11
+	url = ../../pybind/pybind11
