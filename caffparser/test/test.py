@@ -7,7 +7,7 @@ def test():
     with open("../../example/1.caff", "rb") as f:
         contents = f.read()
         length = len(contents)
-        caff = libcaffparser.parse(contents, length,  False)
+        caff = libcaffparser.parse(contents, length)
         print("Python: ")
         if caff.getCode() == libcaffparser.ERROR_HEADER:
             print("Error in header!")

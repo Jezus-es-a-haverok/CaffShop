@@ -8,9 +8,9 @@ CC = g++
 
 all: caffparser test
 
-caffparser: caff.o parser.o
+caffparser: caff.o parser.o caffbinding.o
 	mkdir -p ../lib ;\
-	$(CC) $(FLAGS) $(CLIBFLAG) parser.o caff.o -o ../lib/$(LIBNAME)$(LIBEXT)
+	$(CC) $(FLAGS) $(CLIBFLAG) parser.o caff.o caffbinding.o -o ../lib/$(LIBNAME)$(LIBEXT)
 
 parser.o: src/parser.cpp
 	$(CC) $(FLAGS) $(CLIBFLAG) -c src/parser.cpp -o parser.o
@@ -18,6 +18,8 @@ parser.o: src/parser.cpp
 caff.o: src/caff.cpp
 	$(CC) $(FLAGS) $(CLIBFLAG) -c src/caff.cpp -o caff.o
 
+caffbinding.o: src/caffbinding.cpp
+	$(CC) $(FLAGS) $(CLIBFLAG) -c src/caffbinding.cpp -o caffbinding.o
 
 clean:
 	rm -f -v *.o *.so *.out ../lib/*.so test/*.out
