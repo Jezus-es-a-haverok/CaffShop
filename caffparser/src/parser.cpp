@@ -21,6 +21,7 @@ PYBIND11_MODULE(libcaffparser, m) {
 
     py::class_<CAFF>(m, "CAFF")
       .def(py::init<>())
+      .def("saveToFile", &CAFF::saveToFile)
       .def("getCode", &CAFF::getCode)
       .def("getCreator", &CAFF::getCreator)
       .def("getYear", &CAFF::getYear)
@@ -33,4 +34,9 @@ PYBIND11_MODULE(libcaffparser, m) {
       .def("getThumbnail", &CAFF::getThumbnail)
       .def("getWidth", &CAFF::getWidth)
       .def("getHeight", &CAFF::getHeight);
+
+    py::enum_<ERROR_CODE>(m, "ERROR_CODE")
+      .value("OK", ERROR_CODE::OK)
+      .value("ERROR", ERROR_CODE::ERROR)
+      .export_values();
 }

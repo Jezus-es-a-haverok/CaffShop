@@ -16,14 +16,14 @@ class CAFF {
 public:
   CAFF();
   void loadFromByte(char* caffByte, uint64_t length);
-  void saveToByte(std::vector<std::byte>& bytestream);
+  void saveToFile(std::string filename);
   ERROR_CODE getCode();
   std::string getCreator();
   uint16_t getYear();
-  char getMonth();
-  char getDay();
-  char getHour();
-  char getMin();
+  uint8_t getMonth();
+  uint8_t getDay();
+  uint8_t getHour();
+  uint8_t getMin();
   std::vector<std::string> getTags();
   std::vector<std::string> getCaptions();
   std::vector<char> getThumbnail();
@@ -39,10 +39,10 @@ private:
   std::string creator;              /* Creator */
   uint64_t animNum;
   uint16_t year;
-  char month;
-  char day;
-  char hour;
-  char min;
+  uint8_t month;
+  uint8_t day;
+  uint8_t hour;
+  uint8_t min;
   ERROR_CODE code;
 
   void parseHeader(uint64_t& index, char* caffByte, uint64_t maxLength);

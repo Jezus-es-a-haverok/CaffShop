@@ -9,16 +9,16 @@ std::string CAFF::getCreator() {
 uint16_t CAFF::getYear() {
   return year;
 }
-char CAFF::getMonth() {
+uint8_t CAFF::getMonth() {
   return month;
 }
-char CAFF::getDay() {
+uint8_t CAFF::getDay() {
   return day;
 }
-char CAFF::getHour() {
+uint8_t CAFF::getHour() {
   return hour;
 }
-char CAFF::getMin() {
+uint8_t CAFF::getMin() {
   return min;
 }
 std::vector<std::string> CAFF::getTags() {
@@ -286,31 +286,13 @@ void CAFF::parseAnimations(uint64_t& index, char* caffByte, uint64_t maxLength) 
 }
 
 void CAFF::loadFromByte(char* caffByte, uint64_t length) {
-  std::cout << "\nloadFromByte under construction!\n";
   uint64_t index = 0;
   parseHeader(index, caffByte, length);
   parseCredits(index, caffByte, length);
   parseAnimations(index, caffByte, length);
-  if(code == ERROR) {
-    std::cout << "Error in CAFF file!\n";
-    return;
-  }
-  std::cout << "anim num " << animNum << "\n";
-  std::cout << "year: " << year << " month: " << int(month) << " day: " << int(day) << " hour: " << int(hour) << " min: " << int(min) << "\n";
-  std::cout << "Creator: " << creator << "\n";
-  std::cout << "Captions: \n";
-  for (auto& str : captions) {
-    std::cout << "\t" << str << "\n";
-  }
-  std::cout << "Tags: \n";
-  for (auto& str : tags) {
-    std::cout << "\t" << str << "\n";
-  }
-  std::cout << "Width: " << width << " Height: " << height << "\n";
 }
 
-void CAFF::saveToByte(std::vector<std::byte>& bytestream) {
-  std::cout << "saveToByte not implemented yet!\nSaving file in .tga...\n";
+void CAFF::saveToFile(std::string filename) {
   static unsigned char tga[18];
   tga[2] = 2;
   tga[12] = 255 & width;
@@ -320,7 +302,7 @@ void CAFF::saveToByte(std::vector<std::byte>& bytestream) {
   tga[16] = 24;
   tga[17] = 32;
   std::ofstream myfile;
-  myfile.open ("img.tga");
+  myfile.open (filename);
   for(int i=0; i<18; i++) {
     myfile << tga[i];
   }
@@ -328,8 +310,8 @@ void CAFF::saveToByte(std::vector<std::byte>& bytestream) {
     myfile << thumbnail[i];
   }
   myfile.close();
-  std::cout << "...Done\n";
 }
+
 ERROR_CODE CAFF::getCode() {
   return code;
 }
