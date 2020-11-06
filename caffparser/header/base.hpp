@@ -6,13 +6,6 @@ struct Size {
   int Y;
 };
 
-struct Pixel {
-  int R;
-  int G;
-  int B;
-  int A;
-};
-
 enum ERROR_CODE {
   OK=0, ERROR=1,
 } ;

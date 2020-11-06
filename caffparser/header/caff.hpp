@@ -23,10 +23,13 @@ public:
 
 private:
 
-  std::map<int, Size> size;       /* CIFF ID -> CIFF height and width */
-  std::vector<std::string> tags;  /* The tags from the CIFFs */
-  std::vector<Pixel> thumbnail;   /* The generated thumbnail */
-  std::string creator;            /* Creator */
+  std::map<int, Size> size;         /* CIFF ID -> CIFF height and width */
+  std::vector<std::string> tags;    /* The tags from the CIFFs */
+  std::vector<std::string> captions;/* The captions from the CIFFS */
+  std::vector<char> thumbnail;      /* The generated thumbnail */
+  unsigned long long width;         /* Width of thumbnail */
+  unsigned long long height;        /* Height of thumbnail */
+  std::string creator;              /* Creator */
 
 
   long long headerLength;
@@ -42,7 +45,12 @@ private:
 
   void parseHeader(int& index, char* caffByte, int maxLength);
   void parseCredits(int& index, char* caffByte, int maxLength);
-
+  void parseAnimations(int& index, char* caffByte, int maxLength);
+  bool parseOneAnimation(int& index, char* caffByte, int maxLength, bool savePic);
+  bool parseCiff(int& index, char* caffByte, int maxLength, bool savePic);
+  std::string readCaption(int& index, char* caffByte, int maxLength);
+  std::vector<std::string> readTags(int& index, char* caffByte, int maxLength);
+  void savePixels(int& index, char* caffByte, unsigned long long picSize, unsigned long long maxReadLength);
 };
 
 #endif /* FILE_CAFF_HPP */
