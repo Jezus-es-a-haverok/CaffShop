@@ -22,7 +22,9 @@ def test():
     with open("../../example/2.caff", "rb") as f:
         contents = f.read()
         length = len(contents)
-        libcaffparser.parse(contents, length,  False)
+        caff = libcaffparser.parse(contents, length,  False)
+        print("Python: ")
+        print(caff.getTags())
 
 
 test()

@@ -11,11 +11,9 @@
 
 namespace py = pybind11;
 
-
 class CAFF {
 
 public:
-
   CAFF();
   void loadFromByte(char* caffByte, uint64_t length);
   void saveToByte(std::vector<std::byte>& bytestream);
@@ -33,7 +31,6 @@ public:
   uint64_t getHeight();
 
 private:
-
   std::vector<std::string> tags;    /* The tags from the CIFFs */
   std::vector<std::string> captions;/* The captions from the CIFFS */
   std::vector<char> thumbnail;      /* The generated thumbnail */
