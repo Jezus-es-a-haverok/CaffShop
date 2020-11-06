@@ -168,7 +168,7 @@ std::string CAFF::readCaption(uint64_t& index, char* caffByte, uint64_t maxLengt
 
 std::vector<std::string> CAFF::readTags(uint64_t& index, char* caffByte, uint64_t maxLength) {
   std::vector<std::string> tags;
-  bool endFound;
+  bool endFound = false;
   std::string tag;
   while(index < maxLength) {
     endFound = false;
