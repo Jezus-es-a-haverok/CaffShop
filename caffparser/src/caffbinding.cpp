@@ -8,13 +8,18 @@
 
 namespace py = pybind11;
 
+/**
+ * @file
+ * Contains the binding code required for using this library in python.
+ */
+
 PYBIND11_MODULE(libcaffparser, m) {
     m.doc() = "libcaffparser C++ library";
 
     m.def("parse", &parse, "CAFF parse function");
 
     py::class_<CAFF>(m, "CAFF")
-      .def(py::init<>())
+      .def(py::init<ERROR_CODE>())
       .def("saveToFile", &CAFF::saveToFile)
       .def("getCode", &CAFF::getCode)
       .def("getCreator", &CAFF::getCreator)
