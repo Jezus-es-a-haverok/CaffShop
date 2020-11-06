@@ -10,8 +10,14 @@ CAFF::CAFF() {
 
 long long toLong(char bytes[8]) {
   long long result = 0;
-  for(int i=0; i<8; i++)
-  return *point;
+  for(int i=0; i<8; i++) {
+    long long temp = bytes[i];
+    for(int j = 0; j<i; j++) {
+      temp *= 256;
+    }
+    result += temp;
+  }
+  return result;
 }
 
 long long read8Bytes(int& index, char* caffByte) {
@@ -30,6 +36,7 @@ void CAFF::parseHeader(int& index, char* caffByte, int maxLength) {
     return;
   }
   char Id = caffByte[index];
+  std::cout << Id << "\n";
   index++;
   if(Id != 1) {
     this->code = ERROR;
@@ -38,7 +45,7 @@ void CAFF::parseHeader(int& index, char* caffByte, int maxLength) {
   }
 
   this->headerLength = read8Bytes(index, caffByte);
-  if(this->headerLength != 29) {
+  if(this->headerLength != 20) {
     this->code = ERROR;
     return;
   }
@@ -64,9 +71,12 @@ void CAFF::parseHeader(int& index, char* caffByte, int maxLength) {
 }
 
 void CAFF::loadFromByte(char* caffByte, unsigned long length) {
-  std::cout << "loadFromByte under construction!";
+  std::cout << "\nloadFromByte under construction!";
   int index = 0;
   parseHeader(index, caffByte, length);
+  if(code == ERROR) {
+    std::cout << "Eror in CAFF file!\n";
+  }
   std::cout<<"\nHeader length " << headerLength;
   std::cout<<"\ncaff header length " << caffHeaderLength;
   std::cout<<"\nanim num " << animNum << "\n";
