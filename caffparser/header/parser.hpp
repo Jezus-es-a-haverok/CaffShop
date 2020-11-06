@@ -6,7 +6,7 @@
 #include <pybind11/stl.h>
 
 
-char* parse(char* caffByte, unsigned long length, bool justCheck);
+char* parse(char* caffByte, uint64_t length, bool justCheck);
 
 void print(std::string);
 

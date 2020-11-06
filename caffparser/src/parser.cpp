@@ -6,13 +6,10 @@
 #include <caff.hpp>
 
 
-char* parse(char* caffByte, unsigned long length, bool justCheck) {
-  std::cout << "1";
+char* parse(char* caffByte, uint64_t length, bool justCheck) {
   CAFF* caff = new CAFF();
   std::vector<std::byte> bytestream;
-  std::cout << "2";
   try {
-    std::cout << "Called parse";
     caff->loadFromByte(caffByte, length);
     ERROR_CODE retCode = caff->getCode();
     bytestream.push_back(std::byte(retCode));

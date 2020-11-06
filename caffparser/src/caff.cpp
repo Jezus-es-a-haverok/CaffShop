@@ -9,10 +9,10 @@ CAFF::CAFF() {
 }
 
 
-long long toLong(char bytes[8]) {
-  long long result = 0;
+uint64_t toLong(char bytes[8]) {
+  uint64_t result = 0;
   for(int i=0; i<8; i++) {
-    long long temp = u_char(bytes[i]);
+    uint64_t temp = u_char(bytes[i]);
     for(int j = 0; j<i; j++) {
       temp *= 256;
     }
@@ -21,22 +21,21 @@ long long toLong(char bytes[8]) {
   return result;
 }
 
-long long read8Bytes(int& index, char* caffByte) {
+uint64_t read8Bytes(uint64_t& index, char* caffByte) {
   char arr[8];
-  for(int i=0; i < 8; i++) {
+  for(unsigned i=0; i < 8; i++) {
     arr[i] = caffByte[index];
     index++;
   }
   return toLong(arr);
 }
 
-char readId(int& index, char* caffByte) {
+char readId(uint64_t& index, char* caffByte) {
   char Id = caffByte[index++];
-  std::cout << "Id: " << int(Id) << "\n";
   return Id;
 }
 
-void CAFF::parseHeader(int& index, char* caffByte, int maxLength) {
+void CAFF::parseHeader(uint64_t& index, char* caffByte, uint64_t maxLength) {
   if(maxLength < 29) {
     this->code = ERROR;
     return;
@@ -53,7 +52,7 @@ void CAFF::parseHeader(int& index, char* caffByte, int maxLength) {
   }
 
   char caffMagic[4];
-  for(int i=0; i < 4; i++) {
+  for(unsigned i=0; i < 4; i++) {
     caffMagic[i] = caffByte[index];
     index++;
   }
@@ -72,21 +71,21 @@ void CAFF::parseHeader(int& index, char* caffByte, int maxLength) {
   this->animNum = read8Bytes(index, caffByte);
 }
 
-int read2Bytes(int& index, char* caffByte) {
+int read2Bytes(uint64_t& index, char* caffByte) {
   char yearByte[2];
   yearByte[0] = caffByte[index++];
   yearByte[1] = caffByte[index++];
   return unsigned(yearByte[1])*256 + u_char(yearByte[0]);
 }
 
-void readNBytesToString(int& index, char* caffByte, int length, std::string& creator) {
-  int start = index;
+void readNBytesToString(uint64_t& index, char* caffByte, uint64_t length, std::string& creator) {
+  uint64_t start = index;
   for(;index < start + length; index++) {
     creator += caffByte[index];
   }
 }
 
-void CAFF::parseCredits(int& index, char* caffByte, int maxLength) {
+void CAFF::parseCredits(uint64_t& index, char* caffByte, uint64_t maxLength) {
   if(index + 23 > maxLength) {
     code = ERROR;
     return;
@@ -97,8 +96,7 @@ void CAFF::parseCredits(int& index, char* caffByte, int maxLength) {
     return;
   }
 
-  long long blockLength = read8Bytes(index, caffByte);
-  std::cout << "creator block length: " << blockLength << "\n";
+  uint64_t blockLength = read8Bytes(index, caffByte);
   if(index + blockLength > maxLength) {
     code = ERROR;
     return;
@@ -110,8 +108,7 @@ void CAFF::parseCredits(int& index, char* caffByte, int maxLength) {
   this->hour = caffByte[index++];
   this->min = caffByte[index++];
 
-  long long creatorLength = read8Bytes(index, caffByte);
-  std::cout << "creator length: " << creatorLength << "\n";
+  uint64_t creatorLength = read8Bytes(index, caffByte);
   if(((index + creatorLength) > maxLength) || ((blockLength-14) != creatorLength)) {
     code = ERROR;
     return;
@@ -120,7 +117,7 @@ void CAFF::parseCredits(int& index, char* caffByte, int maxLength) {
   readNBytesToString(index, caffByte, creatorLength, this->creator);
 }
 
-std::string CAFF::readCaption(int& index, char* caffByte, int maxLength) {
+std::string CAFF::readCaption(uint64_t& index, char* caffByte, uint64_t maxLength) {
   std::string caption;
   bool endFound = false;
   while(index < maxLength) {
@@ -137,7 +134,7 @@ std::string CAFF::readCaption(int& index, char* caffByte, int maxLength) {
   return caption;
 }
 
-std::vector<std::string> CAFF::readTags(int& index, char* caffByte, int maxLength) {
+std::vector<std::string> CAFF::readTags(uint64_t& index, char* caffByte, uint64_t maxLength) {
   std::vector<std::string> tags;
   bool endFound;
   std::string tag;
@@ -158,16 +155,16 @@ std::vector<std::string> CAFF::readTags(int& index, char* caffByte, int maxLengt
   return tags;
 }
 
-void CAFF::savePixels(int& index, char* caffByte, unsigned long long picSize, unsigned long long maxReadLength) {
+void CAFF::savePixels(uint64_t& index, char* caffByte, uint64_t picSize, uint64_t maxReadLength) {
   this->thumbnail.reserve(picSize);
   while(index < maxReadLength) {
     this->thumbnail.push_back(caffByte[index++]);
   }
 }
 
-bool CAFF::parseCiff(int& index, char* caffByte, int maxLength, bool savePic) {
+bool CAFF::parseCiff(uint64_t& index, char* caffByte, uint64_t maxLength, bool savePic) {
   char ciffMagic[4];
-  for(int i=0; i < 4; i++) {
+  for(unsigned i=0; i < 4; i++) {
     ciffMagic[i] = caffByte[index];
     index++;
   }
@@ -177,15 +174,15 @@ bool CAFF::parseCiff(int& index, char* caffByte, int maxLength, bool savePic) {
     return false;
   }
 
-  unsigned long long headerLength = read8Bytes(index, caffByte);
-  unsigned long long contentLength = read8Bytes(index, caffByte);
-  unsigned long long width = read8Bytes(index, caffByte);
-  unsigned long long height = read8Bytes(index, caffByte);
+  uint64_t headerLength = read8Bytes(index, caffByte);
+  uint64_t contentLength = read8Bytes(index, caffByte);
+  uint64_t width = read8Bytes(index, caffByte);
+  uint64_t height = read8Bytes(index, caffByte);
   if((contentLength != width * height * 3) || (index + contentLength > maxLength)) {
     code = ERROR;
     return false;
   }
-  unsigned long long maxHeaderLength = headerLength - 36; // Constant header fields = 36 byte
+  uint64_t maxHeaderLength = headerLength - 36; // Constant header fields = 36 byte
   if(maxHeaderLength > headerLength) { // protects against underflow
     code = ERROR;
     return false;
@@ -206,7 +203,7 @@ bool CAFF::parseCiff(int& index, char* caffByte, int maxLength, bool savePic) {
     if(contentLength == 0) {
       return false;
     }
-    unsigned long long maxReadLength = index + contentLength;
+    uint64_t maxReadLength = index + contentLength;
     savePixels(index, caffByte, contentLength, maxReadLength);
     this->width = width;
     this->height = height;
@@ -218,21 +215,21 @@ bool CAFF::parseCiff(int& index, char* caffByte, int maxLength, bool savePic) {
   }
 }
 
-bool CAFF::parseOneAnimation(int& index, char* caffByte, int maxLength, bool savePic) {
+bool CAFF::parseOneAnimation(uint64_t& index, char* caffByte, uint64_t maxLength, bool savePic) {
   if(readId(index, caffByte) != 3) {
     code = ERROR;
     return false;
   }
-  unsigned long long blockLength = read8Bytes(index, caffByte);
+  uint64_t blockLength = read8Bytes(index, caffByte);
   if(index + blockLength > maxLength) {
     code = ERROR;
     return false;
   }
-  unsigned long long duration = read8Bytes(index, caffByte);
+  uint64_t duration = read8Bytes(index, caffByte);
   return parseCiff(index, caffByte, maxLength, savePic);
 }
 
-void CAFF::parseAnimations(int& index, char* caffByte, int maxLength) {
+void CAFF::parseAnimations(uint64_t& index, char* caffByte, uint64_t maxLength) {
   if(this->animNum == 0) {
     return;
   }
@@ -241,7 +238,7 @@ void CAFF::parseAnimations(int& index, char* caffByte, int maxLength) {
     return;
   }
   bool savedPic = false;
-  for(int i=0; i<this->animNum; i++) {
+  for(unsigned i=0; i<this->animNum; i++) {
     if(!savedPic) {
       savedPic = parseOneAnimation(index, caffByte, maxLength, true);
     } else {
@@ -256,9 +253,9 @@ void CAFF::parseAnimations(int& index, char* caffByte, int maxLength) {
   }
 }
 
-void CAFF::loadFromByte(char* caffByte, unsigned long length) {
+void CAFF::loadFromByte(char* caffByte, uint64_t length) {
   std::cout << "\nloadFromByte under construction!\n";
-  int index = 0;
+  uint64_t index = 0;
   parseHeader(index, caffByte, length);
   parseCredits(index, caffByte, length);
   parseAnimations(index, caffByte, length);

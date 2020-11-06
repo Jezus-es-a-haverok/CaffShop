@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <cstdint>
 #include <pybind11/pytypes.h>
 
 #include <base.hpp>
@@ -16,25 +17,24 @@ class CAFF {
 public:
 
   CAFF();
-  void loadFromByte(char* caffByte, unsigned long length);
+  void loadFromByte(char* caffByte, uint64_t length);
   void saveToByte(std::vector<std::byte>& bytestream);
   ERROR_CODE getCode();
   std::string getCreator();
 
 private:
 
-  std::map<int, Size> size;         /* CIFF ID -> CIFF height and width */
   std::vector<std::string> tags;    /* The tags from the CIFFs */
   std::vector<std::string> captions;/* The captions from the CIFFS */
   std::vector<char> thumbnail;      /* The generated thumbnail */
-  unsigned long long width;         /* Width of thumbnail */
-  unsigned long long height;        /* Height of thumbnail */
+  uint64_t width;         /* Width of thumbnail */
+  uint64_t height;        /* Height of thumbnail */
   std::string creator;              /* Creator */
 
 
-  long long headerLength;
-  long long caffHeaderLength;
-  long long animNum;
+  uint64_t headerLength;
+  uint64_t caffHeaderLength;
+  uint64_t animNum;
   int year;
   char month;
   char day;
@@ -43,14 +43,14 @@ private:
   ERROR_CODE code;
 
 
-  void parseHeader(int& index, char* caffByte, int maxLength);
-  void parseCredits(int& index, char* caffByte, int maxLength);
-  void parseAnimations(int& index, char* caffByte, int maxLength);
-  bool parseOneAnimation(int& index, char* caffByte, int maxLength, bool savePic);
-  bool parseCiff(int& index, char* caffByte, int maxLength, bool savePic);
-  std::string readCaption(int& index, char* caffByte, int maxLength);
-  std::vector<std::string> readTags(int& index, char* caffByte, int maxLength);
-  void savePixels(int& index, char* caffByte, unsigned long long picSize, unsigned long long maxReadLength);
+  void parseHeader(uint64_t& index, char* caffByte, uint64_t maxLength);
+  void parseCredits(uint64_t& index, char* caffByte, uint64_t maxLength);
+  void parseAnimations(uint64_t& index, char* caffByte, uint64_t maxLength);
+  bool parseOneAnimation(uint64_t& index, char* caffByte, uint64_t maxLength, bool savePic);
+  bool parseCiff(uint64_t& index, char* caffByte, uint64_t maxLength, bool savePic);
+  std::string readCaption(uint64_t& index, char* caffByte, uint64_t maxLength);
+  std::vector<std::string> readTags(uint64_t& index, char* caffByte, uint64_t maxLength);
+  void savePixels(uint64_t& index, char* caffByte, uint64_t picSize, uint64_t maxReadLength);
 };
 
 #endif /* FILE_CAFF_HPP */
