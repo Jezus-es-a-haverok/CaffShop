@@ -26,15 +26,22 @@ private:
   std::map<int, Size> size;       /* CIFF ID -> CIFF height and width */
   std::vector<std::string> tags;  /* The tags from the CIFFs */
   std::vector<Pixel> thumbnail;   /* The generated thumbnail */
-  std::string Creator;            /* Creator */
+  std::string creator;            /* Creator */
 
 
   long long headerLength;
   long long caffHeaderLength;
   long long animNum;
+  int year;
+  char month;
+  char day;
+  char hour;
+  char min;
   ERROR_CODE code;
 
+
   void parseHeader(int& index, char* caffByte, int maxLength);
+  void parseCredits(int& index, char* caffByte, int maxLength);
 
 };
 
