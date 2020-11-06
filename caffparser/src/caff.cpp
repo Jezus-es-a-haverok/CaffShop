@@ -3,11 +3,43 @@
 
 #include <caff.hpp>
 
+std::string CAFF::getCreator() {
+  return creator;
+}
+uint16_t CAFF::getYear() {
+  return year;
+}
+char CAFF::getMonth() {
+  return month;
+}
+char CAFF::getDay() {
+  return day;
+}
+char CAFF::getHour() {
+  return hour;
+}
+char CAFF::getMin() {
+  return min;
+}
+std::vector<std::string> CAFF::getTags() {
+  return tags;
+}
+std::vector<std::string> CAFF::getCaptions() {
+  return captions;
+}
+std::vector<char> CAFF::getThumbnail() {
+  return thumbnail;
+}
+uint64_t CAFF::getWidth() {
+  return width;
+}
+uint64_t CAFF::getHeight() {
+  return height;
+}
 
 CAFF::CAFF() {
   code = OK;
 }
-
 
 uint64_t toLong(char bytes[8]) {
   uint64_t result = 0;
@@ -45,8 +77,8 @@ void CAFF::parseHeader(uint64_t& index, char* caffByte, uint64_t maxLength) {
     return;
   }
 
-  this->headerLength = read8Bytes(index, caffByte);
-  if(this->headerLength != 20) {
+  uint64_t headerLength = read8Bytes(index, caffByte);
+  if(headerLength != 20) {
     this->code = ERROR;
     return;
   }
@@ -62,8 +94,8 @@ void CAFF::parseHeader(uint64_t& index, char* caffByte, uint64_t maxLength) {
     return;
   }
 
-  this->caffHeaderLength = read8Bytes(index, caffByte);
-  if(this->caffHeaderLength != 20) {
+  uint64_t caffHeaderLength = read8Bytes(index, caffByte);
+  if(caffHeaderLength != 20) {
     this->code = ERROR;
     return;
   }
@@ -263,9 +295,7 @@ void CAFF::loadFromByte(char* caffByte, uint64_t length) {
     std::cout << "Error in CAFF file!\n";
     return;
   }
-  std::cout << "\nHeader length " << headerLength;
-  std::cout << "\ncaff header length " << caffHeaderLength;
-  std::cout << "\nanim num " << animNum << "\n";
+  std::cout << "anim num " << animNum << "\n";
   std::cout << "year: " << year << " month: " << int(month) << " day: " << int(day) << " hour: " << int(hour) << " min: " << int(min) << "\n";
   std::cout << "Creator: " << creator << "\n";
   std::cout << "Captions: \n";

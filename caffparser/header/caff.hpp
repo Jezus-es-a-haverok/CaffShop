@@ -21,6 +21,16 @@ public:
   void saveToByte(std::vector<std::byte>& bytestream);
   ERROR_CODE getCode();
   std::string getCreator();
+  uint16_t getYear();
+  char getMonth();
+  char getDay();
+  char getHour();
+  char getMin();
+  std::vector<std::string> getTags();
+  std::vector<std::string> getCaptions();
+  std::vector<char> getThumbnail();
+  uint64_t getWidth();
+  uint64_t getHeight();
 
 private:
 
@@ -30,18 +40,13 @@ private:
   uint64_t width;         /* Width of thumbnail */
   uint64_t height;        /* Height of thumbnail */
   std::string creator;              /* Creator */
-
-
-  uint64_t headerLength;
-  uint64_t caffHeaderLength;
   uint64_t animNum;
-  int year;
+  uint16_t year;
   char month;
   char day;
   char hour;
   char min;
   ERROR_CODE code;
-
 
   void parseHeader(uint64_t& index, char* caffByte, uint64_t maxLength);
   void parseCredits(uint64_t& index, char* caffByte, uint64_t maxLength);
