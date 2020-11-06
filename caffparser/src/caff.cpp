@@ -69,17 +69,17 @@ char readId(uint64_t& index, char* caffByte) {
 
 void CAFF::parseHeader(uint64_t& index, char* caffByte, uint64_t maxLength) {
   if(maxLength < 29) {
-    this->code = ERROR;
+    this->code = ERROR_HEADER;
     return;
   }
   if(readId(index, caffByte) != 1) {
-    this->code = ERROR;
+    this->code = ERROR_HEADER;
     return;
   }
 
   uint64_t headerLength = read8Bytes(index, caffByte);
   if(headerLength != 20) {
-    this->code = ERROR;
+    this->code = ERROR_HEADER;
     return;
   }
 
@@ -90,13 +90,13 @@ void CAFF::parseHeader(uint64_t& index, char* caffByte, uint64_t maxLength) {
   }
   if(caffMagic[0] != 'C' || caffMagic[1] != 'A' ||
      caffMagic[2] != 'F' || caffMagic[3] != 'F') {
-    this->code = ERROR;
+    this->code = ERROR_HEADER;
     return;
   }
 
   uint64_t caffHeaderLength = read8Bytes(index, caffByte);
   if(caffHeaderLength != 20) {
-    this->code = ERROR;
+    this->code = ERROR_HEADER;
     return;
   }
 
@@ -119,18 +119,18 @@ void readNBytesToString(uint64_t& index, char* caffByte, uint64_t length, std::s
 
 void CAFF::parseCredits(uint64_t& index, char* caffByte, uint64_t maxLength) {
   if(index + 23 > maxLength) {
-    code = ERROR;
+    code = ERROR_CREDITS;
     return;
   }
 
   if(readId(index, caffByte) != 2) {
-    code = ERROR;
+    code = ERROR_CREDITS;
     return;
   }
 
   uint64_t blockLength = read8Bytes(index, caffByte);
   if(index + blockLength > maxLength) {
-    code = ERROR;
+    code = ERROR_CREDITS;
     return;
   }
 
@@ -142,7 +142,7 @@ void CAFF::parseCredits(uint64_t& index, char* caffByte, uint64_t maxLength) {
 
   uint64_t creatorLength = read8Bytes(index, caffByte);
   if(((index + creatorLength) > maxLength) || ((blockLength-14) != creatorLength)) {
-    code = ERROR;
+    code = ERROR_CREDITS;
     return;
   }
 
@@ -161,7 +161,7 @@ std::string CAFF::readCaption(uint64_t& index, char* caffByte, uint64_t maxLengt
     caption += ch;
   }
   if(!endFound) {
-    code = ERROR;
+    code = ERROR_CIFF;
   }
   return caption;
 }
@@ -182,7 +182,7 @@ std::vector<std::string> CAFF::readTags(uint64_t& index, char* caffByte, uint64_
     }
   }
   if(!endFound) {
-    code = ERROR;
+    code = ERROR_CIFF;
   }
   return tags;
 }
@@ -202,7 +202,7 @@ bool CAFF::parseCiff(uint64_t& index, char* caffByte, uint64_t maxLength, bool s
   }
   if(ciffMagic[0] != 'C' || ciffMagic[1] != 'I' ||
      ciffMagic[2] != 'F' || ciffMagic[3] != 'F') {
-    this->code = ERROR;
+    this->code = ERROR_CIFF;
     return false;
   }
 
@@ -211,22 +211,22 @@ bool CAFF::parseCiff(uint64_t& index, char* caffByte, uint64_t maxLength, bool s
   uint64_t width = read8Bytes(index, caffByte);
   uint64_t height = read8Bytes(index, caffByte);
   if((contentLength != width * height * 3) || (index + contentLength > maxLength)) {
-    code = ERROR;
+    code = ERROR_CIFF;
     return false;
   }
   uint64_t maxHeaderLength = headerLength - 36; // Constant header fields = 36 byte
   if(maxHeaderLength > headerLength) { // protects against underflow
-    code = ERROR;
+    code = ERROR_CIFF;
     return false;
   }
   maxHeaderLength = index + maxHeaderLength - 1; // -1 is for the \0 at tags
   this->captions.push_back(readCaption(index, caffByte, maxHeaderLength));
-  if(code == ERROR) {
+  if(code != OK) {
     return false;
   }
   maxHeaderLength++; // compensating the -1 before
   std::vector<std::string> newTags = readTags(index, caffByte, maxHeaderLength);
-  if(code == ERROR) {
+  if(code != OK) {
     return false;
   }
   this->tags.reserve(newTags.size());
@@ -249,12 +249,12 @@ bool CAFF::parseCiff(uint64_t& index, char* caffByte, uint64_t maxLength, bool s
 
 bool CAFF::parseOneAnimation(uint64_t& index, char* caffByte, uint64_t maxLength, bool savePic) {
   if(readId(index, caffByte) != 3) {
-    code = ERROR;
+    code = ERROR_CAFF;
     return false;
   }
   uint64_t blockLength = read8Bytes(index, caffByte);
   if(index + blockLength > maxLength) {
-    code = ERROR;
+    code = ERROR_CAFF;
     return false;
   }
   uint64_t duration = read8Bytes(index, caffByte);
@@ -266,7 +266,7 @@ void CAFF::parseAnimations(uint64_t& index, char* caffByte, uint64_t maxLength) 
     return;
   }
   if(index + this->animNum * 9 > maxLength) {
-    code = ERROR;
+    code = ERROR_CAFF;
     return;
   }
   bool savedPic = false;
@@ -276,12 +276,12 @@ void CAFF::parseAnimations(uint64_t& index, char* caffByte, uint64_t maxLength) 
     } else {
       parseOneAnimation(index, caffByte, maxLength, true);
     }
-    if(code == ERROR) {
+    if(code != OK) {
       return;
     }
   }
   if(!savedPic) {
-    code = ERROR;
+    code = ERROR_CAFF;
   }
 }
 

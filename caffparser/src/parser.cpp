@@ -38,5 +38,9 @@ PYBIND11_MODULE(libcaffparser, m) {
     py::enum_<ERROR_CODE>(m, "ERROR_CODE")
       .value("OK", ERROR_CODE::OK)
       .value("ERROR", ERROR_CODE::ERROR)
+      .value("ERROR_HEADER", ERROR_CODE::ERROR_HEADER)
+      .value("ERROR_CREDITS", ERROR_CODE::ERROR_CREDITS)
+      .value("ERROR_CAFF", ERROR_CODE::ERROR_CAFF)
+      .value("ERROR_CIFF", ERROR_CODE::ERROR_CIFF)
       .export_values();
 }
