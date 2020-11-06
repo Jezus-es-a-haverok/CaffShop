@@ -5,9 +5,8 @@
 #include <string>
 #include <pybind11/stl.h>
 
+#include <caff.hpp>
 
-char* parse(char* caffByte, uint64_t length, bool justCheck);
-
-void print(std::string);
+CAFF parse(char* caffByte, uint64_t length, bool justCheck);
 
 #endif /* FILE_PARSER_HPP */

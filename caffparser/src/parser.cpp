@@ -3,43 +3,34 @@
 #include <pybind11/stl.h>
 
 #include <parser.hpp>
-#include <caff.hpp>
 
-
-char* parse(char* caffByte, uint64_t length, bool justCheck) {
+CAFF parse(char* caffByte, uint64_t length, bool justCheck) {
   CAFF* caff = new CAFF();
-  std::vector<std::byte> bytestream;
   try {
     caff->loadFromByte(caffByte, length);
-    ERROR_CODE retCode = caff->getCode();
-    bytestream.push_back(std::byte(retCode));
-
-    if(!justCheck && retCode == OK) {
-      caff->saveToByte(bytestream);
-    }
-
   } catch (...) {
-    bytestream.insert(bytestream.begin(), std::byte(ERROR));
     std::cout << "Error";
   }
-
-  delete caff;
-  char* ret = "asd";
-  return ret;
-}
-
-void print2(std::string msg) {
-  std::cout << msg;
+  return *caff;
 }
 
 PYBIND11_MODULE(libcaffparser, m) {
     m.doc() = "libcaffparser C++ library";
 
     m.def("parse", &parse, "CAFF parse function");
-    //m.def("print2", &print2, "sample print");
 
-    //py::class_<Pet>(m, "CAFF")
-    //    .def(py::init<>());
-        //.def("setName", &Pet::setName)
-      //  .def("getName", &Pet::getName);
+    py::class_<CAFF>(m, "CAFF")
+      .def(py::init<>())
+      .def("getCode", &CAFF::getCode)
+      .def("getCreator", &CAFF::getCreator)
+      .def("getYear", &CAFF::getYear)
+      .def("getMonth", &CAFF::getMonth)
+      .def("getDay", &CAFF::getDay)
+      .def("getHour", &CAFF::getHour)
+      .def("getMin", &CAFF::getMin)
+      .def("getTags", &CAFF::getTags)
+      .def("getCaptions", &CAFF::getCaptions)
+      .def("getThumbnail", &CAFF::getThumbnail)
+      .def("getWidth", &CAFF::getWidth)
+      .def("getHeight", &CAFF::getHeight);
 }
