@@ -41,17 +41,21 @@ def fuzzer():
         fd, fuzz_output = mkstemp()
         with open(fuzz_output, 'wb') as f:
             f.write(buf)
-        process = subprocess.Popen([app, fuzz_output])
+        try:
+            process = subprocess.Popen([app, fuzz_output])
 
-        time.sleep(1)
-        crashed = process.poll()
-        if crashed:
-            print("Process crashed ({} <- {})".format(app, file_choice))
-            copyfile(fuzz_output, "fuzz" + str(cnt))
-            stat_counter[(app_name, 'failed')] += 1
-        else:
-            process.terminate()
-            stat_counter[(app_name, 'succeeded')] += 1
+            time.sleep(1)
+            crashed = process.poll()
+            if crashed:
+                print("Process crashed ({} <- {})".format(app, file_choice))
+                copyfile(fuzz_output, "fuzz" + str(cnt))
+                stat_counter[(app_name, 'failed')] += 1
+            else:
+                process.terminate()
+                stat_counter[(app_name, 'succeeded')] += 1
+        except Exception:
+            print(cnt)
+            return stat_counter
     return stat_counter
 
 def main():

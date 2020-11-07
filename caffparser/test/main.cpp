@@ -19,6 +19,7 @@ int main(int argc, char *argv[] ) {
   if(caff.getCode() == OK) {
     caff.saveToFile("cpptga.tga");
   }
+  in.close();
   //delete caff;
   return 0;
 }
