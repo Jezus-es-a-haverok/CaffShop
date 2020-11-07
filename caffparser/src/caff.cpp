@@ -123,10 +123,8 @@ std::vector<std::string> CAFF::readTags(uint64_t& index, char* caffByte, uint64_
     }
   }
   if(!endFound) {
-    std::cout << cnt++ << "\n";
     code = ERROR_CIFF;
   }
-  std::cout << cnt++ << "\n";
   return tags;
 }
 
