@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <string>
-#include <pybind11/stl.h>
 
 /**
  * @file

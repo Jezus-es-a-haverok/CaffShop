@@ -123,8 +123,10 @@ std::vector<std::string> CAFF::readTags(uint64_t& index, char* caffByte, uint64_
     }
   }
   if(!endFound) {
+    std::cout << cnt++ << "\n";
     code = ERROR_CIFF;
   }
+  std::cout << cnt++ << "\n";
   return tags;
 }
 
@@ -153,7 +155,7 @@ bool CAFF::parseCiff(uint64_t& index, char* caffByte, uint64_t maxLength, bool s
   uint64_t contentLength = read8Bytes(index, caffByte);
   uint64_t width = read8Bytes(index, caffByte);
   uint64_t height = read8Bytes(index, caffByte);
-  if((contentLength != width * height * 3) || (index + contentLength > maxLength)) {
+  if((contentLength != width * height * 3) || (index + contentLength > maxLength) || headerLength > maxLength) {
     code = ERROR_CIFF;
     return false;
   }
@@ -298,8 +300,12 @@ void CAFF::parseHeader(uint64_t& index, char* caffByte, uint64_t maxLength) {
 void CAFF::loadFromByte(char* caffByte, uint64_t length) {
   uint64_t index = 0;
   parseHeader(index, caffByte, length);
-  parseCredits(index, caffByte, length);
-  parseAnimations(index, caffByte, length);
+  if(code == OK) {
+    parseCredits(index, caffByte, length);
+  }
+  if(code == OK) {
+    parseAnimations(index, caffByte, length);
+  }
 }
 
 void CAFF::saveToFile(std::string filename) {
