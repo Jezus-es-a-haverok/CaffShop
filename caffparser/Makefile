@@ -1,8 +1,7 @@
 LIBNAME = libcaffparser
 LIBEXT =$(shell python3-config --extension-suffix)
 PYFLAGS = -I ../import/pybind11/include/ $(shell python3-config --includes)
-SECFLAG = -O -z noexecstack -pie -D_FORTIFY_SOURCE=2 -D_FORTIFY_SOURCE=2 -Wl,-z,relro,-z,now -fstack-protector-all -Wall -std=c++17
-FLAGS =  -I header/ -g
+FLAGS =  -I header/ -O -z noexecstack -pie -D_FORTIFY_SOURCE=2 -D_FORTIFY_SOURCE=2 -Wl,-z,relro,-z,now -fstack-protector-all -Wall -std=c++17
 CLIBFLAG = -fPIC -shared
 WINEND = dll
 LINEND = so

@@ -16,7 +16,7 @@ apps_under_test = ["./test.out"]
 
 
 fuzz_factor = 50  # 250
-num_tests = 100
+num_tests = 8000
 
 def fuzzer():
     """Fuzzing apps."""
@@ -39,8 +39,8 @@ def fuzzer():
         # end of Charlie Miller's code
 
         fd, fuzz_output = mkstemp()
-        open(fuzz_output, 'wb').write(buf)
-
+        with open(fuzz_output, 'wb') as f:
+            f.write(buf)
         process = subprocess.Popen([app, fuzz_output])
 
         time.sleep(1)
