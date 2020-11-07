@@ -6,7 +6,7 @@ test:
 
 clean:
 	make -C caffparser/ clean ; \
-	rm -r codedoc
+	rm -f -v -r codedoc
 
 doxygen:
 	doxygen Doxyfile ; \

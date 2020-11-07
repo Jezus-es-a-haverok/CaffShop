@@ -1,11 +1,11 @@
 #include <parser.hpp>
 
 CAFF parse(char* caffByte, uint64_t length) {
-  CAFF* caff = new CAFF(OK);
+  CAFF caff(OK);
   try {
-    caff->loadFromByte(caffByte, length);
+    caff.loadFromByte(caffByte, length);
   } catch (...) {
-    caff = new CAFF(ERROR);
+    caff = CAFF(ERROR);
   }
-  return *caff;
+  return caff;
 }
