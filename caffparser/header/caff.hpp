@@ -152,7 +152,8 @@ private:
    * in the thumbnail vector.
    * @param index is used to index the file.
    * @param caffByte is the whole CAFF file in memory.
-   * @param maxLength is the length of the file.
+   * @param picSize is the total size of the picture.
+   * @param maxReadLength is the maximum index that could be read.
    */
   void savePixels(uint64_t& index, char* caffByte, uint64_t picSize, uint64_t maxReadLength);
 

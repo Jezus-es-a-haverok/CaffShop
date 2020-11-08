@@ -17,7 +17,6 @@
  * @see CAFF::parse()
  * @param caffByte is the whole CAFF file in memory.
  * @param length is the length of the file.
- * @warning Deletion of the CAFF file is the callers task!
  */
 CAFF parse(char* caffByte, uint64_t length);
 
