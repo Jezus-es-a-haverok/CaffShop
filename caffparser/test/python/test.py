@@ -1,10 +1,10 @@
 import sys
-sys.path.append("../../lib")
+sys.path.append("../../../lib")
 
 import libcaffparser
 
 def test():
-    with open("../../example/1.caff", "rb") as f:
+    with open("../../../import/example/1.caff", "rb") as f:
         contents = f.read()
         length = len(contents)
         caff = libcaffparser.parse(contents, length)
@@ -35,4 +35,8 @@ def test():
         caff.saveToFile("output/test.tga")
         return 0
 
-test()
+ret = test()
+if ret != 0:
+    print("################  TEST FAILED  #####################")
+else:
+    print("################  TEST SUCCSEEDED  #################")

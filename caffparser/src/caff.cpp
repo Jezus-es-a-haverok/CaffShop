@@ -182,6 +182,10 @@ bool CAFF::parseCiff(uint64_t& index, char* caffByte, uint64_t maxLength, bool s
       return false;
     }
     uint64_t maxReadLength = index + contentLength;
+    if(maxReadLength > maxLength) {
+      code = ERROR_CIFF;
+      return false;
+    }
     savePixels(index, caffByte, contentLength, maxReadLength);
     this->width = width;
     this->height = height;

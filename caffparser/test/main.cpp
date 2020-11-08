@@ -15,9 +15,11 @@ int main(int argc, char *argv[] ) {
   std::string contents((std::istreambuf_iterator<char>(in)),
     std::istreambuf_iterator<char>());
   int length = contents.size();
-  CAFF caff = parse((char*)contents.c_str(), length);
-  if(caff.getCode() == OK) {
-    caff.saveToFile("cpptga.tga");
+  if(length > 0) {
+    CAFF caff = parse((char*)contents.c_str(), length);
+    if(caff.getCode() == OK) {
+      caff.saveToFile("cpptga.tga");
+    }
   }
   in.close();
   //delete caff;

@@ -5,13 +5,17 @@ FLAGS =  -I header/ -O -z noexecstack -pie -D_FORTIFY_SOURCE=2 -D_FORTIFY_SOURCE
 CLIBFLAG = -fPIC -shared
 WINEND = dll
 LINEND = so
-ILIBF = -L./test/ -Wl,-rpath=./ -lcaffparser
+ILIBF = -L./test/bin/ -Wl,-rpath=./ -lcaffparser
 WCC = x86_64-w64-mingw32-g++
 CC = g++
 
-all: caffparser cppcaffparser wcppcaffparser test
+default: libcaffparser cppcaffparser aflbin runtest
 
-caffparser: caff.o parser.o caffbinding.o
+all: libcaffparser cppcaffparser win aflbin runtest
+
+win: wcppcaffparser
+
+libcaffparser: caff.o parser.o caffbinding.o
 	mkdir -p ../lib ;\
 	$(CC) $(FLAGS) $(PYFLAGS) $(CLIBFLAG) parser.o caff.o caffbinding.o -o ../lib/$(LIBNAME)$(LIBEXT)
 
@@ -44,13 +48,19 @@ wcparser.o: src/parser.cpp
 wccaff.o: src/caff.cpp
 	$(CC) $(FLAGS) $(CLIBFLAG) -c src/caff.cpp -o wccaff.o
 
-test: test.o
-	$(CC) $(FLAGS) $(ILIBF) test/test.o -o test/test.out ; \
-	cp test/test.out ../lib/ ; \
-	./lib/test
+aflbin: test.o cppcaffparser
+	cp -v ../lib/libcaffparser.so test/bin/ ; \
+	$(CC) $(FLAGS) $(ILIBF) test/test.o -o test/bin/test.out
 
 test.o: test/main.cpp
 	$(CC) $(FLAGS) $(ILIBF) -c test/main.cpp -o test/test.o
 
+runtest: libcaffparser
+	mkdir test/python/output ; \
+	cd test/python ; \
+	python3 test.py ; \
+	cd ../..
+
 clean:
-	rm -f -v *.o *.so *.out ../lib/*.so test/*.out ../lib/*.dll
+	rm -f -v *.o *.so *.out ../lib/*.so test/*.out ../lib/*.dll test/*.o test/*.so test/bin/*.out test/bin/*.so; \
+	rm -f -v -r ./test/python/output

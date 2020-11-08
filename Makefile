@@ -1,8 +1,20 @@
-all:
+default:
 	make -C caffparser/
 
-test:
-	make -C caffparser/ test
+all:
+	make -C caffparser/ all
+
+libcaffparser:
+	make -C caffparser/ libcaffparser
+
+aflbin:
+	make -C caffparser/ aflbin
+
+runtest:
+	make -C caffparser/ runtest
+
+win:
+	make -C caffparser/ win
 
 clean:
 	make -C caffparser/ clean ; \

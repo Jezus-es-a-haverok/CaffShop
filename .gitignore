@@ -50,6 +50,6 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-example/
+import/example/
 caffparser/test/output/
 codedoc/
