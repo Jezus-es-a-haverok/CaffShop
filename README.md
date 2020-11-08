@@ -1,6 +1,6 @@
 # CaffShop
 
-This repository contains the implementation of CaffShop where you can share CAFF file with others.
+This repository contains the implementation of CaffShop where you can share CAFF files with others.
 
 * **import**: Contains external modules.
     * **pybind1**: pybind11 git submodule.
@@ -45,11 +45,12 @@ Python tests are in:
 
 ### Compile
 
-The folling make commands can be executed:
+The following make commands can be executed:
 
     make
 
 or
+
     make default
 
 makes the C++ python module, the C++ shared library (Linux only), the binary for afl testing and runs the sanity ckeck.
