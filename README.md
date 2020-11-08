@@ -1,16 +1,19 @@
 # CaffShop
 
-* **import**: Külső modulokat tartalmaz.
-    * **pybind1**: pybind11 git almodul
-* **caffparser**: C++ caffparser modul, python binding-gal.
-* **lib**: Az elkészült library van itt fordítás után.
+This repository contains the implementation of CaffShop where you can share CAFF file with others.
 
-## Repository letöltése:
+* **import**: Contains external modules.
+    * **pybind1**: pybind11 git submodule.
+    * **example**: some CAFF files.
+* **caffparser**: C++ caffparser module, with python binding. Contains tests as well.
+* **lib**: The compiled libraries are here.
+
+## Repository:
 
     git clone https://github.com/Jezus-es-a-haverok/CaffShop.git
     git submodule update --init
 
-A pybind11 modul tesztjeinek futtatása (ehhez kell a python3-dev és cmake):
+To run the pybind11 module's tests (python3-dev and cmake are needed):
 
     cd import/pybind11
     mkdir build
@@ -18,21 +21,63 @@ A pybind11 modul tesztjeinek futtatása (ehhez kell a python3-dev és cmake):
     cmake ..
     make check -j 4
 
+## Compile caffparser
 
-## Parser fordítása
+### Prerequisites
 
-Lehet a project gyökérkönyvtárában és a caffparser/ könyvtársban is:
+You will need git, make, gcc (and g++), python3-dev. For Windows compilation mingw-gcc, for doxygen generation doxygen.
+
+### Results
+
+Compilation results can be:
+
+* **lin/libcaffparser.cpython-38-x86_64-linux-gnu.so**: The implemented C++ library as a python module (with bindings).
+* **libcaffparser.so**: C++ shared library for Linux.
+* **libcaffparser.dll**: C++ shared library for Windows. It is not officially supported (use with care!).
+* **caffparser/test/bin/test.out**: ELF executable file (Linux program) which is linked againt libcaffparser.so (has to be in the system library path or in the same directory as test.out). This executable can be used for AFL testing.
+
+### Python tests
+
+Python tests are in:
+
+* **caffparser/test/bin/fuzztest.py**: Python fuzz testing. Requires test.out.
+* **caffparser/test/python/test.py**: Simple Python sanity check. Requires only libcaffparser.cpython-38-x86_64-linux-gnu.so.
+
+### Compile
+
+The folling make commands can be executed:
 
     make
 
-vagy
+or
+    make default
+
+makes the C++ python module, the C++ shared library (Linux only), the binary for afl testing and runs the sanity ckeck.
 
     make all
 
-Tisztítás:
+all the above plus the the Windows shared library.
+
+    make libcaffparser
+
+makes only the C++ Python module.
+
+    make aflbin
+
+makes the C++ shared library (Linux) and the binary for AFL testing.
+
+    make win
+
+only makes the Windows C++ shared library.
+
+    make runtest
+
+runs the sanity check (and makes all required stuff)
 
     make clean
 
-Tesztek automatikusan lefutnak az all esetén, de lehet kézzel:
+cleans the project
 
-    make test
+    make doxygen
+
+generate the code documentation using doxygen.
