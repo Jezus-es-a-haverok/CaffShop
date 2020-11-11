@@ -1,4 +1,3 @@
-#include <iostream>
 #include <fstream>
 
 #include <caff.hpp>
@@ -319,8 +318,7 @@ void CAFF::saveToTGA(std::string filename) {
   tga[15] = 255 & (height >> 8);
   tga[16] = 24;
   tga[17] = 32;
-  std::ofstream myfile;
-  myfile.open (filename);
+  std::ofstream myfile(filename, std::ios::binary);
   for(int i=0; i<18; i++) {
     myfile << tga[i];
   }

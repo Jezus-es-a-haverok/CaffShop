@@ -11,7 +11,7 @@ int main(int argc, char *argv[] ) {
     std::cout << "Rossz argument!\n";
     return 0;
   }
-  std::ifstream in(argv[1]);
+  std::ifstream in(argv[1], std::ios::binary);
   std::string contents((std::istreambuf_iterator<char>(in)),
     std::istreambuf_iterator<char>());
   int length = contents.size();
