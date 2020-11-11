@@ -324,8 +324,10 @@ void CAFF::saveToFile(std::string filename) {
   for(int i=0; i<18; i++) {
     myfile << tga[i];
   }
-  for(int i=0; i<thumbnail.size(); i++) {
-    myfile << thumbnail[i];
+  for(int i=0; i<thumbnail.size()+3; i+=3) {
+      myfile << thumbnail[i+2];
+      myfile << thumbnail[i+1];
+      myfile << thumbnail[i+0];
   }
   myfile.close();
 }
