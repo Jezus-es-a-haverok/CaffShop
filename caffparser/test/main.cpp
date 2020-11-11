@@ -18,7 +18,7 @@ int main(int argc, char *argv[] ) {
   if(length > 0) {
     CAFF caff = parse((char*)contents.c_str(), length);
     if(caff.getCode() == OK) {
-      caff.saveToFile("cpptga.tga");
+      caff.saveToTGA("cpptga.tga");
     }
   }
   in.close();

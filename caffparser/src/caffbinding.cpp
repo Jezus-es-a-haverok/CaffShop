@@ -20,7 +20,7 @@ PYBIND11_MODULE(libcaffparser, m) {
 
     py::class_<CAFF>(m, "CAFF")
       .def(py::init<ERROR_CODE>())
-      .def("saveToFile", &CAFF::saveToFile)
+      .def("saveToTGA", &CAFF::saveToTGA)
       .def("getCode", &CAFF::getCode)
       .def("getCreator", &CAFF::getCreator)
       .def("getYear", &CAFF::getYear)

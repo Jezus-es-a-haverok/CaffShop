@@ -43,7 +43,7 @@ public:
    * Should be only called after a successful parase.
    * @param filename is new file's name.
    */
-  void saveToFile(std::string filename);
+  void saveToTGA(std::string filename);
 
   ERROR_CODE getCode();
   std::string getCreator();

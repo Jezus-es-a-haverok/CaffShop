@@ -32,7 +32,7 @@ def test():
         print(caff.getTags())
         print("Width: " + str(caff.getWidth()) + " Height: " + str(caff.getHeight()))
 
-        caff.saveToFile("output/test.tga")
+        caff.saveToTGA("output/test.tga")
         return 0
 
 ret = test()

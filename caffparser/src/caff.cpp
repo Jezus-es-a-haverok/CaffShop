@@ -310,7 +310,7 @@ void CAFF::loadFromByte(char* caffByte, uint64_t length) {
   }
 }
 
-void CAFF::saveToFile(std::string filename) {
+void CAFF::saveToTGA(std::string filename) {
   static unsigned char tga[18];
   tga[2] = 2;
   tga[12] = 255 & width;
