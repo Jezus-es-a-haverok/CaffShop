@@ -1,22 +1,24 @@
 LIBNAME = libcaffparser
 LIBEXT =$(shell python3-config --extension-suffix)
+WLIBEXT =.pyd
 PYFLAGS = -I ../import/pybind11/include/ $(shell python3-config --includes)
+WPYFLAGS = -I ../import/pybind11/include/ $(shell /usr/x86_64-w64-mingw32/bin/python3-config --includes) -L /usr/x86_64-w64-mingw32/bin/ -lpython3.8
 FLAGS =  -I header/ -O  -Wall -std=c++17
 SECFLAGS = -z noexecstack -pie -D_FORTIFY_SOURCE=2 -D_FORTIFY_SOURCE=2 -Wl,-z,relro,-z,now -fstack-protector-all
 CLIBFLAG = -fPIC -shared
 WINEND = dll
 LINEND = so
-ILIBF = -L./test/bin/ -Wl,-rpath=./ -lcaffparser
+ILIBF = -L../lib/ -Wl,-rpath=./ -lcaffparser
 WCC = x86_64-w64-mingw32-g++
 CC = g++
 
 default: libcaffparser cppcaffparser aflbin runtest
 
-all: libcaffparser cppcaffparser win aflbin winbin runtest
+all: libcaffparser cppcaffparser aflbin win runtest
 
-win: wcppcaffparser winbin
+win: wplibcaffparser wcppcaffparser winbin
 
-# Python module
+# Python module for Linux
 libcaffparser: caff.o parser.o caffbinding.o
 	mkdir -p ../lib ;\
 	$(CC) $(FLAGS) $(PYFLAGS) $(SECFLAGS) $(CLIBFLAG) parser.o caff.o caffbinding.o -o ../lib/$(LIBNAME)$(LIBEXT)
@@ -29,6 +31,20 @@ caff.o: src/caff.cpp
 
 caffbinding.o: src/caffbinding.cpp
 	$(CC) $(FLAGS) $(PYFLAGS) $(SECFLAGS) $(CLIBFLAG) -c src/caffbinding.cpp -o caffbinding.o
+
+# Python module for Windows
+wplibcaffparser: wpcaff.o wpparser.o wpcaffbinding.o
+	mkdir -p ../lib ;\
+	$(WCC) $(FLAGS) $(WPYFLAGS) $(CLIBFLAG) wpparser.o wpcaff.o wpcaffbinding.o -o ../lib/$(LIBNAME)$(WLIBEXT)
+
+wpparser.o: src/parser.cpp
+	$(WCC) $(FLAGS) $(WPYFLAGS) $(CLIBFLAG) -c src/parser.cpp -o wpparser.o
+
+wpcaff.o: src/caff.cpp
+	$(WCC) $(FLAGS) $(WPYFLAGS) $(CLIBFLAG) -c src/caff.cpp -o wpcaff.o
+
+wpcaffbinding.o: src/caffbinding.cpp
+	$(WCC) $(FLAGS) $(WPYFLAGS) $(CLIBFLAG) -c src/caffbinding.cpp -o wpcaffbinding.o
 
 # Linux shared library
 cppcaffparser: ccaff.o cparser.o
@@ -62,10 +78,6 @@ test.o: test/main.cpp
 
 # Windows executable
 winbin: wtest.o wcppcaffparser
-	cp -v ../lib/libcaffparser.dll test/bin/ ; \
-	cp -v /usr/x86_64-w64-mingw32/bin/libstdc++-6.dll test/bin/ ; \
-	cp -v /usr/x86_64-w64-mingw32/bin/libgcc_s_seh-1.dll test/bin/ ; \
-	cp -v /usr/x86_64-w64-mingw32/bin/libwinpthread-1.dll test/bin/ ; \
 	$(WCC) $(FLAGS) $(ILIBF) test/wtest.o -o test/bin/test.exe
 
 wtest.o: test/main.cpp
@@ -78,5 +90,5 @@ runtest: libcaffparser
 	cd ../..
 
 clean:
-	rm -f -v *.o *.so *.out ../lib/*.so test/*.out ../lib/*.dll test/*.o test/*.so test/bin/*.out test/bin/*.so; \
+	rm -f -v *.o *.so *.out ../lib/*.so test/*.out ../lib/*.dll test/*.o test/*.so test/bin/*.out test/bin/*.so ../lib/*.pyd test/bin/*.exe ; \
 	rm -f -v -r ./test/python/output

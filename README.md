@@ -7,6 +7,7 @@ This repository contains the implementation of CaffShop where you can share CAFF
     * **example**: some CAFF files.
 * **caffparser**: C++ caffparser module, with python binding. Contains tests as well.
 * **lib**: The compiled libraries are here.
+* **Release**: The compiled software and required dependencies (for Windows).
 
 ## Repository:
 
@@ -25,7 +26,7 @@ To run the pybind11 module's tests (python3-dev and cmake are needed):
 
 ### Prerequisites
 
-You will need git, make, gcc (and g++), python3-dev. For Windows compilation mingw-gcc, for doxygen generation doxygen.
+You will need git, make, gcc (and g++), python3-dev. For Windows: compilation mingw-gcc, minggw-gcc-python (and all dependencies. For Arch Linux there are AUR packages for these.). For doxygen generation: doxygen.
 
 ### Results
 
@@ -69,15 +70,23 @@ makes the C++ shared library (Linux) and the binary for AFL testing.
 
     make win
 
-only makes the Windows C++ shared library.
+makes the Windows C++ shared library and the C++ Python module for Windows.
 
     make runtest
 
-runs the sanity check (and makes all required stuff)
+runs the sanity check (and makes all required stuff).
 
     make clean
 
 cleans the project
+
+    initrelease
+
+initializes the release directory (only need to run once).
+
+    release
+
+copies the compiled software to the release directory and zip everithing.
 
     make doxygen
 

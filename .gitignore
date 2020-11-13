@@ -24,6 +24,7 @@
 
 # Shared objects (inc. Windows DLLs)
 *.dll
+*.pyd
 *.so
 *.so.*
 *.dylib
@@ -50,5 +51,8 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Other stuff
 caffparser/test/python/output/
 codedoc/
+Release/
