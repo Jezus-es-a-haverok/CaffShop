@@ -1,0 +1,13 @@
+<h1>CAFF files</h1>
+<ul>
+{% for caff in object_list %}
+    {% if caff.content == None %}
+        <img src="../../media/webshop/karl.jpg" alt="itt kene lennie a kepnek">
+    {% else %}
+        <img src="{{ caff.content.url }}" alt="itt kene lennie a kepnek">
+    {% endif %}
+    <li>{{ caff.name }} - {{ caff.creator }}</li>
+{% empty %}
+    <li>No CAFF files yet.</li>
+{% endfor %}
+</ul>
