@@ -35,3 +35,8 @@ urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += [
     path('', include('django.contrib.auth.urls')),
 ]
+from register import views
+
+urlpatterns += [
+    path("register/", views.register, name="register"),  # <-- added
+]
