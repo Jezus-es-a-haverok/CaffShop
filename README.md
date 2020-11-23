@@ -91,3 +91,16 @@ copies the compiled software to the release directory and zip everithing.
     make doxygen
 
 generate the code documentation using doxygen.
+
+## caffshop Django project
+
+### Prerequisites
+ The 'django' branch currently requires the following python packages:
+ * django-crispy-forms
+ * pillow (needed to display the ImageField model attributes)
+ * django-filter (responsible for filtering the objects in the ListView)
+ * django-bootstrap-form (to make the ListView search form prettier)
+ 
+ Each of these can be installed using pip:
+ `pip install <package-name>`
+   
