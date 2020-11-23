@@ -1,13 +1,27 @@
+{% load bootstrap %}
+
+
 <h1>CAFF files</h1>
-<ul>
-{% for caff in object_list %}
-    {% if caff.content == None %}
-        <img src="../../media/webshop/karl.jpg" alt="itt kene lennie a kepnek">
-    {% else %}
-        <img src="{{ caff.content.url }}" alt="itt kene lennie a kepnek">
-    {% endif %}
-    <li>{{ caff.name }} - {{ caff.creator }}</li>
-{% empty %}
-    <li>No CAFF files yet.</li>
-{% endfor %}
-</ul>
+
+<div class="container">
+
+    <form method="GET">
+        {{ filter.form|bootstrap }}
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    
+    <ul>
+    {% for caff in filter.qs %}
+        {% if caff.content == None %}
+            <img src="" alt="itt kene lennie a kepnek">
+        {% else %}
+            <img src="{{ caff.content.url }}" alt="itt kene lennie a kepnek">
+        {% endif %}
+        <li>{{ caff.name }} - {{ caff.creator }}</li>
+    {% empty %}
+        <li>No CAFF files yet.</li>
+    {% endfor %}
+    </ul>
+
+</div>
+
