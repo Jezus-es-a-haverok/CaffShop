@@ -102,5 +102,6 @@ generate the code documentation using doxygen.
  * django-bootstrap-form (to make the ListView search form prettier)
  
  Each of these can be installed using pip:
- `pip install <package-name>`
+ 
+   `pip install <package-name>`
    
