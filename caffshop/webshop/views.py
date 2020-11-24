@@ -20,8 +20,7 @@ def upload_caff(request):
     if request.method == 'POST':
         form = UploadCAFFForm(request.POST, request.FILES)
         if form.is_valid():
-            # handle_uploaded_caff(request.FILES['file'])
-            return HttpResponseRedirect('/success/url/')
+            form.save()
     else:
         form = UploadCAFFForm()
     return render(request, 'webshop/upload.html', {'form': form})

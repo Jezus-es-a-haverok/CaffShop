@@ -1,5 +1,7 @@
-from django import forms
+from django.forms import ModelForm
+from .models import CAFF
 
-class UploadCAFFForm(forms.Form):
-    name = forms.CharField(max_length=50)
-    content = forms.ImageField()
+class UploadCAFFForm(ModelForm):
+    class Meta:
+        model = CAFF
+        fields = ['name', 'content']
