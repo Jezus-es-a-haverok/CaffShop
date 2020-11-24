@@ -1,7 +1,8 @@
 from django.urls import path
 
-from webshop.views import CAFFListView
+from . import views
 
 urlpatterns = [
-    path('', CAFFListView.as_view(), name='caff-list'),
+    path('', views.CAFFListView.as_view()),
+    path('upload/', views.upload_caff, name='caff-upload'),
 ]
