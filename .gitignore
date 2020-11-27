@@ -63,3 +63,9 @@ caffshop/register/migrations/
 caffshop/webshop/__pycache__/
 caffshop/webshop/migrations/
 *.pyc
+caffshop/caffshop/.idea/
+caffshop/.idea/
+caffshop/webshop/.idea/
+caffshop/register/.idea/
+/caffshop/media/
+*.sqlite3
