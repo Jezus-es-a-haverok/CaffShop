@@ -7,8 +7,10 @@ from django.shortcuts import render
 from .forms import UploadCAFFForm
 import datetime
 from PIL import Image
+from django.core.files import File as DjangoFile
 import numpy as np
 import sys
+import io
 sys.path.append("../lib")
 import libcaffparser
 
@@ -29,13 +31,22 @@ def upload_caff(request):
             content = form.cleaned_data['content'].read()
             caff = libcaffparser.parse(content, len(content))
             if caff.getCode() == libcaffparser.OK:
+                
+                # Convert to image
                 array = np.array(caff.getThumbnail()[0:caff.getWidth() * caff.getHeight()*3], dtype=np.uint8)
                 B = np.reshape(array,(caff.getHeight(), caff.getWidth(), 3))
-                print(B)
                 thumbnailImage = Image.fromarray(B, 'RGB')
-                thumbnailImage.save("thumbnailImage.png")
-                from django.core.files import File as DjangoFile
-                file_obj1 = DjangoFile(open("thumbnailImage.png", mode='rb'), name=str(form.cleaned_data['name']))
+
+                # Save into buffer
+                buf = io.BytesIO()
+                thumbnailImage.save(buf, format='PNG')
+                byte_im = buf.getvalue()
+
+                # Save to file with django
+                file_obj1 = DjangoFile(open("thumbnailImage.png", mode='wb+'), name=str(form.cleaned_data['name']))
+                file_obj1.write(byte_im)
+
+                # Create CAFF object
                 record = CAFF()
                 record.content = request.FILES['content']
                 record.name = form.cleaned_data['name']

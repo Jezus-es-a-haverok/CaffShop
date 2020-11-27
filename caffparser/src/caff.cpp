@@ -224,7 +224,7 @@ void CAFF::parseAnimations(uint64_t& index, char* caffByte, uint64_t maxLength) 
     if(!savedPic) {
       savedPic = parseOneAnimation(index, caffByte, maxLength, true);
     } else {
-      parseOneAnimation(index, caffByte, maxLength, true);
+      parseOneAnimation(index, caffByte, maxLength, false);
     }
     if(code != OK) {
       return;
