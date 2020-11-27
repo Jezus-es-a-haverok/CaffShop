@@ -10,13 +10,13 @@
         {{ filter.form|bootstrap }}
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
-    
+
     <ul>
     {% for caff in filter.qs %}
-        {% if caff.content == None %}
+        {% if caff.thumbnail == None %}
             <img src="" alt="itt kene lennie a kepnek">
         {% else %}
-            <img src="{{ caff.content.url }}" alt="itt kene lennie a kepnek">
+            <img src="{{ caff.thumbnail.url }}" alt="itt kene lennie a kepnek">
         {% endif %}
         <li>{{ caff.name }} - {{ caff.creator }}</li>
     {% empty %}
@@ -25,4 +25,3 @@
     </ul>
 
 </div>
-

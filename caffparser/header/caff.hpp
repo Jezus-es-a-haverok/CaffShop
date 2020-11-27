@@ -54,14 +54,14 @@ public:
   uint8_t getMin();
   std::vector<std::string> getTags();
   std::vector<std::string> getCaptions();
-  std::vector<char> getThumbnail();
+  std::vector<uint8_t> getThumbnail();
   uint64_t getWidth();
   uint64_t getHeight();
 
 private:
   std::vector<std::string> tags;    /**< The tags from the CIFFs */
   std::vector<std::string> captions;/**< The captions from the CIFFS */
-  std::vector<char> thumbnail;      /**< The generated thumbnail in RGB format */
+  std::vector<uint8_t> thumbnail;      /**< The generated thumbnail in RGB format */
   uint64_t width;                   /**< Width of thumbnail */
   uint64_t height;                  /**< Height of thumbnail */
   std::string creator;              /**< Creator */
