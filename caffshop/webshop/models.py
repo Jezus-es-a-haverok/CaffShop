@@ -6,17 +6,19 @@ import uuid  # Required for unique CAFF file instances
 
 class Comment(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID of the comment')
-    image = models.ForeignKey('CAFF', on_delete=models.SET_NULL, null=True)
+    image = models.ForeignKey('CAFF', on_delete=models.SET_NULL, null=True, related_name='comments')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     text = models.TextField(max_length=1000, help_text='Comment text')
-    date = models.DateField(null=True, blank=True)  #TODO default érték a mostani
+    date = models.DateField(auto_now_add=True)
+    active = models.BooleanField(default=True)
+
 
     class Meta:
         ordering = ['date', 'id']
 
     def __str__(self):
         """String for representing the Model object."""
-        return f'{self.text}'
+        return 'Comment {} at {}'.format(self.text, self.image.name)
 
 class CAFF(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, help_text='Unique ID of the CAFF file')
