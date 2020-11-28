@@ -1,0 +1,55 @@
+<!--{% load bootstrap %}-->
+{% load crispy_forms_tags %}
+
+<h1>NAME: {{ caff.name }}</h1>
+<p>USER: {{ caff.user }}</p>
+<p>CREATOR: {{ caff.creator }}</p>
+<p>CREATION_DATE: {{ caff.creation_date }}</p>
+<p>UPLOAD_DATE: {{ caff.upload_date }}</p>
+<p>THUMBNAIL:
+     {% if caff.thumbnail == None %}
+            <img src="" alt="itt kene lennie a kepnek">
+        {% else %}
+            <img src="{{ caff.thumbnail.url }}" alt="itt kene lennie a kepnek">
+        {% endif %}
+</p>
+<p>CAPTIONS:
+<!--    {% for captions in caff.captions.all %}-->
+<!--            {{captions.name}}-->
+<!--    {% endfor %}-->
+</p>
+<p>TAGS:
+<!--    {% for tag in caff.tags.all %}-->
+<!--            {{tag.name}}-->
+<!--    {% endfor %}-->
+</p>
+
+
+<!--Ez egy csoves megoldas a back gombra...-->
+<input type=button value="Back" onClick="window.history.back();return false;">
+
+
+<a href="javascript:void(0)" class="btn btn-primary btn-lg dump">Download</a>
+
+
+{% for comment in comments %}
+        <div class="comments" style="padding: 10px;">
+          <p class="font-weight-bold">
+              {{ comment.user }}
+            <span class=" text-muted font-weight-normal">
+              {{ comment.date }}
+            </span>
+          </p>
+          {{ comment.text| linebreaks }}
+        </div>
+{% endfor %}
+
+<div class="card-body">
+        <h3>Leave a comment</h3>
+        <form method="post" style="margin-top: 1.3em;">
+          {{ comment_form.as_p }}
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
+        </form>
+</div>
+
