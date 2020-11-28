@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'webshop',
     'register.apps.RegisterConfig',
     'crispy_forms',
+    'django_extensions',
+    'bootstrapform'
 ]
 
 MIDDLEWARE = [
