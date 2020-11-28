@@ -32,7 +32,7 @@ You will need git, make, gcc (and g++), python3-dev. For Windows: compilation mi
 
 Compilation results can be:
 
-* **lin/libcaffparser.cpython-38-x86_64-linux-gnu.so**: The implemented C++ library as a python module (with bindings).
+* **lib/libcaffparser.cpython-38-x86_64-linux-gnu.so**: The implemented C++ library as a python module (with bindings).
 * **libcaffparser.so**: C++ shared library for Linux.
 * **libcaffparser.dll**: C++ shared library for Windows. It is not officially supported (use with care!).
 * **caffparser/test/bin/test.out**: ELF executable file (Linux program) which is linked againt libcaffparser.so (has to be in the system library path or in the same directory as test.out). This executable can be used for AFL testing.
