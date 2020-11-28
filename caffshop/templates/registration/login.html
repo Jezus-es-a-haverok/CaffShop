@@ -1,4 +1,6 @@
 {% extends "base_generic.html" %}
+{% load crispy_forms_tags %}
+
 
 {% block content %}
 
@@ -17,17 +19,9 @@
   
   <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
-    <table>
-      <tr>
-        <td>{{ form.username.label_tag }}</td>
-        <td>{{ form.username }}</td>
-      </tr>
-      <tr>
-        <td>{{ form.password.label_tag }}</td>
-        <td>{{ form.password }}</td>
-      </tr>
-    </table>
-    <input type="submit" value="login" />
+{{ form|crispy }}
+
+    <input type="submit" class="btn btn-success" value="login" />
     <input type="hidden" name="next" value="{{ next }}" />
   </form>
   
