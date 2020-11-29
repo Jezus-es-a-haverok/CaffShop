@@ -9,6 +9,25 @@ from django.urls import reverse
 
 # Create your tests here.
 
+class DetailBaseTest(TestCase):
+    def setUp(self):
+        self.content_1 = open("example/1.caff", "rb")
+        self.uploaded_file_1 = SimpleUploadedFile("example/1.caff", self.content_1.read())
+        self.user = User.objects.create_user(username='admin', password='admin')
+        self.c = Client()  # above, from django.test import TestCase,Client
+        self.c.login(username='admin', password='admin')
+        self.c.post('/webshop/upload/', {'name': 'admin', 'content': self.uploaded_file_1})
+        self.caff = CAFF.objects.get(name='admin')
+        self.detail_url = '/webshop/' + str(self.caff.id) + '/'
+
+class DetailTest(DetailBaseTest):
+    def test_can_view_detail_page(self):
+        response = self.c.get(self.detail_url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_comment_success(self):
+        
+
 class CommentTestCase(TestCase):
     def setUp(self):
         Comment.objects.create(text="valami")
@@ -60,8 +79,6 @@ class BaseTest(TestCase):
                                         email='jlennon@beatles.com',
                                         password='glass onion')
         self.caff = CAFF.objects.create(user=self.user)
-
-
 
     def test_create_caff_user(self):
         self.assertEqual(self.caff.user, self.user)
