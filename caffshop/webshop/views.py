@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.utils import timezone
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -16,12 +17,12 @@ from django.core.files import File as DjangoFile
 import numpy as np
 import sys
 import io
+
 sys.path.append("../lib")
 import libcaffparser
 
 
 class CAFFListView(ListView):
-
     model = CAFF
     paginate_by = 100  # if pagination is desired
 
@@ -29,6 +30,7 @@ class CAFFListView(ListView):
         context = super().get_context_data(**kwargs)
         context['filter'] = CAFFFilter(self.request.GET, queryset=self.get_queryset())
         return context
+
 
 @login_required
 def upload_caff(request):
@@ -38,10 +40,9 @@ def upload_caff(request):
             content = form.cleaned_data['content'].read()
             caff = libcaffparser.parse(content, len(content))
             if caff.getCode() == libcaffparser.OK:
-
                 # Convert to image
-                array = np.array(caff.getThumbnail()[0:caff.getWidth() * caff.getHeight()*3], dtype=np.uint8)
-                B = np.reshape(array,(caff.getHeight(), caff.getWidth(), 3))
+                array = np.array(caff.getThumbnail()[0:caff.getWidth() * caff.getHeight() * 3], dtype=np.uint8)
+                B = np.reshape(array, (caff.getHeight(), caff.getWidth(), 3))
                 thumbnailImage = Image.fromarray(B, 'RGB')
 
                 # Save into buffer
@@ -61,24 +62,25 @@ def upload_caff(request):
                 record.user = request.user
                 record.creator = caff.getCreator()
                 record.creation_date = datetime.datetime(
-                    year = caff.getYear(),
-                    month = caff.getMonth(),
-                    day = caff.getDay(),
-                    hour = caff.getHour(),
-                    minute = caff.getMin(),
-                    )
+                    year=caff.getYear(),
+                    month=caff.getMonth(),
+                    day=caff.getDay(),
+                    hour=caff.getHour(),
+                    minute=caff.getMin(),
+                )
                 record.upload_date = datetime.datetime.now()
                 record.tags = caff.getTags()
                 record.captions = caff.getCaptions()
                 record.save()
+                return HttpResponseRedirect(reverse('caff_detailView', args=(record.id,)))
 
     else:
         form = UploadCAFFForm()
     return render(request, 'webshop/upload.html', {'form': form})
 
+
 @login_required
 def caff_detailview(request, id):
-
     template_name = 'webshop/caff_detailView.html'
     caff = get_object_or_404(CAFF, id=id)
     print(caff.content)
@@ -103,6 +105,7 @@ def caff_detailview(request, id):
                                            'comments': comments,
                                            'new_comment': new_comment,
                                            'comment_form': comment_form})
+
 
 @login_required
 def caff_download(request, id):
