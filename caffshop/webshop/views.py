@@ -86,7 +86,6 @@ def upload_caff(request):
 def caff_detailview(request, id):
     template_name = 'webshop/caff_detailView.html'
     caff = get_object_or_404(CAFF, id=id)
-    print(caff.content)
     comments = caff.comments.filter(active=True)
     new_comment = None
 

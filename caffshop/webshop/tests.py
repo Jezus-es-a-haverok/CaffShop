@@ -19,14 +19,35 @@ class DetailBaseTest(TestCase):
         self.c.post('/webshop/upload/', {'name': 'admin', 'content': self.uploaded_file_1})
         self.caff = CAFF.objects.get(name='admin')
         self.detail_url = '/webshop/' + str(self.caff.id) + '/'
+        self.download_url = '/webshop/download/' + str(self.caff.id) + '/'
+        self.comment = {
+            'text': 'test_comment'
+        }
 
 class DetailTest(DetailBaseTest):
     def test_can_view_detail_page(self):
         response = self.c.get(self.detail_url)
         self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'webshop/caff_detailView.html')
+
+    def test_fail_doesnt_exist(self):
+        CAFF.objects.all().delete()
+        response = self.c.get(self.detail_url)
+        self.assertEqual(response.status_code, 404)
 
     def test_comment_success(self):
-        
+        response = self.c.post(self.detail_url, self.comment, format='text/html')
+        self.assertIsNotNone(Comment.objects.get(text=self.comment['text']))
+        self.assertEqual(response.status_code, 200)
+
+    def test_download_success(self):
+        response = self.c.get(self.download_url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_download_fail_doesnt_exist(self):
+        CAFF.objects.all().delete()
+        response = self.c.get(self.download_url)
+        self.assertEqual(response.status_code, 404)
 
 class CommentTestCase(TestCase):
     def setUp(self):
@@ -49,7 +70,6 @@ class CommentTestCase(TestCase):
         self.assertEqual(date.today(), valami2.date)
         self.assertIsNone(valami2.user)
         self.assertIsNone(valami2.image)
-
 
 class UserTestCase(TestCase):
     def test_create_user(self):
