@@ -15,6 +15,9 @@ runtest:
 
 win:
 	make -C caffparser/ win
+	
+mac:
+	make -C caffparser/ mac
 
 clean:
 	make -C caffparser/ clean ; \
