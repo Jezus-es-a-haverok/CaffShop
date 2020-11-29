@@ -3,35 +3,23 @@
 
 {% block content %}
 
-<h1>NAME: {{ caff.name }}</h1>
-<p>USER: {{ caff.user }}</p>
-<p>CREATOR: {{ caff.creator }}</p>
-<p>CREATION_DATE: {{ caff.creation_date }}</p>
-<p>UPLOAD_DATE: {{ caff.upload_date }}</p>
-<p>THUMBNAIL:
+<h1>{{ caff.name }}</h1>
+<p>Uploader: {{ caff.user }}</p>
+<p>Upload date: {{ caff.upload_date }}</p>
+
+<p>Creator: {{ caff.creator }}</p>
+<p>Creation date: {{ caff.creation_date }}</p>
+
+<p>
      {% if caff.thumbnail == None %}
             <img src="" alt="itt kene lennie a kepnek">
         {% else %}
             <img src="{{ caff.thumbnail.url }}" alt="itt kene lennie a kepnek">
         {% endif %}
 </p>
-<p>CAPTIONS:
-<!--    {% for captions in caff.captions.all %}-->
-<!--            {{captions.name}}-->
-<!--    {% endfor %}-->
-</p>
-<p>TAGS:
-<!--    {% for tag in caff.tags.all %}-->
-<!--            {{tag.name}}-->
-<!--    {% endfor %}-->
-</p>
 
-
-<!--Ez egy csoves megoldas a back gombra...-->
-<input type=button value="Back" onClick="window.history.back();return false;">
-
-
-<a href="javascript:void(0)" class="btn btn-primary btn-lg dump">Download</a>
+<a class="btn btn-primary  btn-lg" href="/webshop/download/{{ caff.id }}/ ">Download</a>
+<a class="btn btn-primary  btn-lg" href="/webshop/">Back</a>
 
 
 {% for comment in comments %}
@@ -51,6 +39,8 @@
         <form method="post" style="margin-top: 1.3em;">
           {{ comment_form.as_p }}
           {% csrf_token %}
+            {{ form|crispy }}
+
           <button type="submit" class="btn btn-primary  btn-lg">Submit</button>
         </form>
 </div>

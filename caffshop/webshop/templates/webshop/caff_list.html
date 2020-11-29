@@ -48,6 +48,7 @@
                 <img src="{{ caff.thumbnail.url }}" alt="itt kene lennie a kepnek">
             {% endif %}
             <li>{{ caff.name }} - {{ caff.creator }}</li>
+            <a class="btn btn-primary  btn-lg" href="/webshop/{{ caff.id }}/ ">Details</a>
         </div>
     {% empty %}
         <li>No CAFF files yet.</li>
