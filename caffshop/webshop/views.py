@@ -1,6 +1,7 @@
 from django.utils import timezone
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.contrib.auth.decorators import login_required
 from .filters import CAFFFilter
 from .models import CAFF
 from .models import Comment
@@ -18,6 +19,7 @@ import io
 sys.path.append("../lib")
 import libcaffparser
 
+
 class CAFFListView(ListView):
 
     model = CAFF
@@ -28,6 +30,7 @@ class CAFFListView(ListView):
         context['filter'] = CAFFFilter(self.request.GET, queryset=self.get_queryset())
         return context
 
+@login_required
 def upload_caff(request):
     if request.method == 'POST':
         form = UploadCAFFForm(request.POST, request.FILES)
@@ -73,7 +76,7 @@ def upload_caff(request):
         form = UploadCAFFForm()
     return render(request, 'webshop/upload.html', {'form': form})
 
-
+@login_required
 def caff_detailview(request, id):
 
     template_name = 'webshop/caff_detailView.html'
@@ -101,7 +104,7 @@ def caff_detailview(request, id):
                                            'new_comment': new_comment,
                                            'comment_form': comment_form})
 
-
+@login_required
 def caff_download(request, id):
     template_name = 'webshop/caff_detailView.html'
     caff = get_object_or_404(CAFF, id=id)
