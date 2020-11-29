@@ -1,14 +1,12 @@
 from datetime import date
 
 from django.core.files.base import ContentFile
+from django.core.files.uploadedfile import SimpleUploadedFile
+from webshop.models import Comment, CAFF
+from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.urls import reverse
 
-from webshop.models import Comment, CAFF
-from django.contrib.auth.models import User
-from webshop.forms import UploadCAFFForm
-from register.forms import RegisterForm
-from django.core.files.uploadedfile import SimpleUploadedFile, TemporaryUploadedFile
 # Create your tests here.
 
 class CommentTestCase(TestCase):
@@ -35,7 +33,6 @@ class CommentTestCase(TestCase):
 
 
 class UserTestCase(TestCase):
-
     def test_create_user(self):
         user = User.objects.create_user(username='john',
                                         email='jlennon@beatles.com',
@@ -43,7 +40,6 @@ class UserTestCase(TestCase):
         self.assertEqual(user.username, "john")
         self.assertEqual(user.email, "jlennon@beatles.com")
         self.assertNotEqual(user.password, 'glass onion')
-
     def test_create_same_usernames(self):
         user = User.objects.create_user(username='john',
                                         email='jlennon@beatles.com',
@@ -58,8 +54,7 @@ class UserTestCase(TestCase):
         finally:
             self.assertEqual(flag, True)
 
-
-class CAFFTestCase(TestCase):
+class BaseTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='john',
                                         email='jlennon@beatles.com',
