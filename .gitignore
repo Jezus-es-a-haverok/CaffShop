@@ -56,3 +56,16 @@ dkms.conf
 caffparser/test/python/output/
 codedoc/
 Release/
+
+caffshop/caffshop/__pycache__/
+caffshop/register/__pycache__/
+caffshop/register/migrations/
+caffshop/webshop/__pycache__/
+caffshop/webshop/migrations/
+*.pyc
+caffshop/caffshop/.idea/
+caffshop/.idea/
+caffshop/webshop/.idea/
+caffshop/register/.idea/
+/caffshop/media/
+*.sqlite3

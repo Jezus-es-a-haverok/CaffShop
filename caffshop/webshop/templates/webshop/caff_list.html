@@ -1,0 +1,59 @@
+<style type="text/css">
+    a.upload {
+        display: inline-block;
+        margin-bottom: 15px;
+        font-size: larger;
+    }
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0 auto;
+        text-align: center;
+    }
+    li {
+        margin-top: 5px;
+        margin-bottom: 15px;
+    }
+    ul>div {
+        display: inline-block;
+        vertical-align: top;
+        padding: 20px;
+    }
+    img {
+        max-height: 200px;
+        width: auto;
+    }
+</style>
+
+{% extends "base_generic.html" %}
+{% load bootstrap %}
+
+{% block content %}
+<h1>CAFF files</h1>
+
+<div class="container">
+
+    <form method="GET">
+        <a class="upload" href="/webshop/upload/">Upload new CAFF</a>
+        {{ filter.form|bootstrap }}
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <ul>
+    {% for caff in filter.qs %}
+        <div>
+            {% if caff.thumbnail == None %}
+                <img src="" alt="itt kene lennie a kepnek">
+            {% else %}
+                <img src="{{ caff.thumbnail.url }}" alt="itt kene lennie a kepnek">
+            {% endif %}
+            <li>{{ caff.name }} - {{ caff.creator }}</li>
+            <a class="btn btn-primary  btn-lg" href="/webshop/{{ caff.id }}/ ">Details</a>
+        </div>
+    {% empty %}
+        <li>No CAFF files yet.</li>
+    {% endfor %}
+    </ul>
+
+</div>
+{% endblock %}

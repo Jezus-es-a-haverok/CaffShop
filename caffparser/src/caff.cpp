@@ -30,7 +30,7 @@ std::vector<std::string> CAFF::getTags() {
 std::vector<std::string> CAFF::getCaptions() {
   return captions;
 }
-std::vector<char> CAFF::getThumbnail() {
+std::vector<uint8_t> CAFF::getThumbnail() {
   return thumbnail;
 }
 uint64_t CAFF::getWidth() {
@@ -130,7 +130,7 @@ std::vector<std::string> CAFF::readTags(uint64_t& index, char* caffByte, uint64_
 void CAFF::savePixels(uint64_t& index, char* caffByte, uint64_t picSize, uint64_t maxReadLength) {
   this->thumbnail.reserve(picSize);
   while(index < maxReadLength) {
-    this->thumbnail.push_back(caffByte[index++]);
+    this->thumbnail.push_back(uint8_t(caffByte[index++]));
   }
 }
 
@@ -224,7 +224,7 @@ void CAFF::parseAnimations(uint64_t& index, char* caffByte, uint64_t maxLength) 
     if(!savedPic) {
       savedPic = parseOneAnimation(index, caffByte, maxLength, true);
     } else {
-      parseOneAnimation(index, caffByte, maxLength, true);
+      parseOneAnimation(index, caffByte, maxLength, false);
     }
     if(code != OK) {
       return;
