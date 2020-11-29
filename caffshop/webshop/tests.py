@@ -71,65 +71,44 @@ class CAFFTestCase(TestCase):
     def test_create_caff_user(self):
         self.assertEqual(self.caff.user, self.user)
 
-# class UploadCAFFFormTestCase(TestCase):
-#
-#     def setUp(self):
-#         self.content = open("example/2.caff", "rb")
-#         self.uploaded_file = SimpleUploadedFile("example/2.caff", self.content.read())
-#
-#     def test_forms_empty_content(self):
-#         form_data = {'name': 'valami'}
-#         form = UploadCAFFForm(data=form_data)
-#         self.assertFalse(form.is_valid())
-#     #
-#     # def test_forms_empty_name(self):
-#     #     form_data = {'content': self.content}
-#     #     form = UploadCAFFForm(data=form_data)
-#     #     self.assertFalse(form.is_valid())
-#     #
-#     def test_forms_valid(self):
-#         form_data = {'name': 'valami', 'content': self.content}
-#         form = UploadCAFFForm(data=form_data)
-#         self.assertTrue(form.is_valid())
-#     #
-#     # def test_form_response(self):
-#     #     user = User.objects.create_user(username='admin',
-#     #                                     password='admin')
-#     #     c = Client()  # above, from django.test import TestCase,Client
-#     #
-#     #     response = c.post('/login/', {'username':'admin','password':'asd'})
-#     #     print(response.status_code)
-#     #     # with open("example/2.caff", "rb") as fp:
-#     #     #
-#     #     #     response = c.post('/webshop/upload/', {'content': fp})
-#     #     #     print(response.context)
-#
-#
-#         # response = self.client.get('/login/')
-#         # csrf_token = response.context['csrf_token']
-#         # print(csrf_token)
-#         # response = self.client.post('/login/', {'username': 'admin', 'password': "admin", "csrfmiddlewaretoken": csrf_token})
-#         # print(response.context)
-#         # with open("example/2.caff", "rb") as fp:
-#         #     response = self.client.post('/webshop/upload/', {'name': 'valami', 'content': fp})
-#         # print(response)
-#         # self.assertEqual(response.status_code, 200)
+class UploadCAFFFormTestCase(TestCase):
 
+    def setUp(self):
+        self.content_1 = open("example/1.caff", "rb")
+        self.content_2 = open("example/2.caff", "rb")
+        self.content_3 = open("example/3.caff", "rb")
+        self.uploaded_file_1 = SimpleUploadedFile("example/2.caff", self.content_1.read())
+        self.uploaded_file_2 = SimpleUploadedFile("example/1.caff", self.content_2.read())
+        self.uploaded_file_3 = SimpleUploadedFile("example/3.caff", self.content_3.read())
+        self.user = User.objects.create_user(username='admin',
+                                             password='admin')
+        self.c = Client()  # above, from django.test import TestCase,Client
+        self.c.login(username='admin', password='admin')
 
+    def test_upload_caff_1(self):
+        response = self.c.post('/webshop/upload/', {'name': 'admin', 'content': self.uploaded_file_1})
+        self.assertEqual(response.status_code, 302)
+
+    def test_upload_caff_2(self):
+        response = self.c.post('/webshop/upload/', {'name': 'admin', 'content': self.uploaded_file_2})
+        self.assertEqual(response.status_code, 302)
+
+    def test_upload_caff_3(self):
+        response = self.c.post('/webshop/upload/', {'name': 'admin', 'content': self.uploaded_file_3})
+        self.assertEqual(response.status_code, 200)
+    
 class LoginViewTestCase(TestCase):
 
-    def test_login_valid(self):
-        user = User.objects.create_user(username='admin',
+    def setUp(self):
+        self.user = User.objects.create_user(username='admin',
                                         password='admin')
-        c = Client()  # above, from django.test import TestCase,Client
+        self.c = Client()  # above, from django.test import TestCase,Client
 
-        response = c.post('/login/', {'username': 'admin', 'password': 'admin'})
+
+    def test_login_valid(self):
+        response = self.c.post('/login/', {'username': 'admin', 'password': 'admin'})
         self.assertEqual(response.status_code, 302)
 
     def test_login_not_valid(self):
-        user = User.objects.create_user(username='admin',
-                                        password='admin')
-        c = Client()  # above, from django.test import TestCase,Client
-
-        response = c.post('/login/', {'username': 'admin', 'password': 'asd'})
+        response = self.c.post('/login/', {'username': 'admin', 'password': 'asd'})
         self.assertEqual(response.status_code, 200)
