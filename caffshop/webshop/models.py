@@ -9,7 +9,7 @@ class Comment(models.Model):
     image = models.ForeignKey('CAFF', on_delete=models.SET_NULL, null=True, related_name='comments')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     text = models.TextField(max_length=1000)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(auto_now_add=True, null=True)
     active = models.BooleanField(default=True)
 
 
