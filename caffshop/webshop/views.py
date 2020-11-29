@@ -17,6 +17,7 @@ from django.core.files import File as DjangoFile
 import numpy as np
 import sys
 import io
+from django.contrib import messages
 
 sys.path.append("../lib")
 import libcaffparser
@@ -73,6 +74,8 @@ def upload_caff(request):
                 record.captions = caff.getCaptions()
                 record.save()
                 return HttpResponseRedirect(reverse('caff_detailView', args=(record.id,)))
+            else:
+                messages.error(request, 'Invalid CAFF file')
 
     else:
         form = UploadCAFFForm()
