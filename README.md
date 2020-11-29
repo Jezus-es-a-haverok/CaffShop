@@ -101,6 +101,7 @@ generate the code documentation using doxygen.
  * django-filter (responsible for filtering the objects in the ListView)
  * django-bootstrap-form (to make the ListView search form prettier)
  * numpy
+ 
  Each of these can be installed using pip:
  
    `pip install <package-name>`
